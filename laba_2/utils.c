@@ -1,7 +1,7 @@
 #include "message.h"
 #include <string.h>
 #include <arpa/inet.h>
-#include <unistd.h>
+#include <sys/socket.h>
 
 int send_message(int sock, uint8_t type, const char *data, size_t data_len) {
     Message msg;
@@ -50,7 +50,12 @@ int recv_message(int sock, Message *msg) {
         if (n <= 0) return -1;
         payload_received += n;
     }
-    msg->payload[payload_len] = '\0';
+
+    if (payload_len < MAX_PAYLOAD) {
+        msg->payload[payload_len] = '\0';
+    } else {
+        msg->payload[MAX_PAYLOAD - 1] = '\0';
+    }
     
     return 0;
 }
