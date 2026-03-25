@@ -82,6 +82,7 @@ int main() {
                 break;
             case MSG_BYE:
                 running = 0;
+                send_message(client_sock, MSG_BYE, "BYE!", 4);
                 break;
             default:
                 fprintf(stderr, "Unknown message type: %d\n", msg.type);
